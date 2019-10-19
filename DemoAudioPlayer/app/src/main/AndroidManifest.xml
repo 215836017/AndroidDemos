@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.test.audioplayer">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -18,7 +20,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".AudioTrack.AudioTrackActivity" />
-        <activity android:name=".soundPool.SoundPoolActivity"></activity>
+        <activity android:name=".soundPool.SoundPoolActivity" />
         <activity android:name=".Ringtone.RingtoneActivity" />
         <activity android:name=".mediaPlayer.MediaPlayerActivity" />
     </application>

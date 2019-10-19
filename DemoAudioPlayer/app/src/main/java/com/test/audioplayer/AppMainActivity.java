@@ -40,7 +40,7 @@ public class AppMainActivity extends AppCompatActivity {
     @SuppressLint("ResourceType")
     private void init() {
         listView = findViewById(R.id.mainAct_listView);
-        String[] datas = getResources().getStringArray(R.string.app_theme);
+        String[] datas = getResources().getStringArray(R.array.audioPlayer_items);
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_list_item_1, datas);
         listView.setAdapter(adapter);
