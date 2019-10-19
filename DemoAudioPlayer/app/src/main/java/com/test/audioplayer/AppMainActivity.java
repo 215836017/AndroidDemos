@@ -16,6 +16,11 @@ import com.test.audioplayer.soundPool.SoundPoolActivity;
 
 /**
  * https://www.cnblogs.com/HDK2016/p/8043247.html
+ *
+ * https://blog.csdn.net/u014253332/article/details/86474950
+ * https://blog.csdn.net/leixiaohua1020
+ * http://www.rosoo.net/
+ * http://bbs.chinaffmpeg.com/forum.php
  */
 public class AppMainActivity extends AppCompatActivity {
 

@@ -54,4 +54,14 @@
     这四个音频文件。</string>
     <string name="at_noFile">音频文件不存在！</string>
     <!-- audioTrack 界面中相关的字符串 end-->
+
+
+    <!-- ringtone 界面中相关的字符串 start-->
+    <string name="rt_phoneComing">播放来电铃声的默认音乐</string>
+    <string name="rt_randoms">随机播放一个Ringtone</string>
+    <string name="rt_ringtones">播放一个设置的来电铃声</string>
+    <string name="rt_alarms">播放一个设置的闹钟铃声</string>
+    <string name="rt_notifications">播放一个设置的通知铃声</string>
+    <!-- ringtone 界面中相关的字符串 end-->
+
 </resources>
