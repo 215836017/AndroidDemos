@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">AudioPlayr</string>
+    <string name="app_theme">AudioPlayr</string>
+
+    <!-- soundPool 界面中相关的字符串 start-->
+    <string name="sound_1">播放音效1</string>
+    <string name="sound_2">播放音效2</string>
+    <string name="sound_3">播放音效3</string>
+    <string name="sound_stop">停止播放</string>
+    <!-- soundPool 界面中相关的字符串 end-->
+
+    <string-array name="audioPlayer_items">
+        <item>SoundPool</item>
+        <item>MediaPlayer</item>
+        <item>AudioTrack</item>
+        <item>Ringtone</item>
+    </string-array>
+</resources>
