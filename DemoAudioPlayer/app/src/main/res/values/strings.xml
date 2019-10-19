@@ -40,4 +40,18 @@
         频资源时的方式不同外，其他的都相同。又考虑到访问网络，申请权限需要兼容Android6前后的版本，因此加载
         和播放网络音频资源的代码暂不实现</string>
     <!-- mediaPlayer 界面中相关的字符串 end-->
+
+
+    <!-- audioTrack 界面中相关的字符串 start-->
+    <string name="at_play_wav1">play_WAV_1</string>
+    <string name="at_play_wav2">play_WAV_2</string>
+    <string name="at_play_pcm1">play_PCM_1</string>
+    <string name="at_play_pcm2">play_PCM_2</string>
+    <string name="at_stop">stop</string>
+    <string name="at_text_readMe">AudioTrack 直接支持WAV和PCM，其他音频需要解码成PCM格式才能播放。
+        (其他无损格式没有尝试，有兴趣可以使本文提供的例子测试一下),并且是流模式，所以这里通过从sdcard
+    读取音频流来进行播放。所以在sdcard根目录下要有sdcard/a.wav, sdcard/b.wav, sdcard/a.pcm, sdcard/b.pcm
+    这四个音频文件。</string>
+    <string name="at_noFile">音频文件不存在！</string>
+    <!-- audioTrack 界面中相关的字符串 end-->
 </resources>
