@@ -24,6 +24,10 @@
 2019.10.10
 
 1. add DemoBanner.
+2. add DemoFloatingWindow.
 
 2019.10.12
 
+1. add DemoHandlerThread.
+
+2019.10.13
