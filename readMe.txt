@@ -31,3 +31,7 @@
 1. add DemoHandlerThread.
 
 2019.10.13
+
+1. add DemoNDK_mk and DemoNDK_CMake.
+
+201910.14
