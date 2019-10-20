@@ -38,6 +38,6 @@
 
 1. add DemoReplugin.
 2. add DemoBaseNDK.
-
+3. modify DemoNDK_CMake.
 201910.15
 
