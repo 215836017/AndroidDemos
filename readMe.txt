@@ -51,3 +51,8 @@
 
 2019.10.18
 
+1. add DemoBaseAdapter and DemoImageSwitcher.
+2. modify DemoIntentService.
+
+2019.10.19
+
