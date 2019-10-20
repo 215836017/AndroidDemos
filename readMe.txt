@@ -14,6 +14,7 @@
 2019.10.03
 
 1. add DemoIntentService.
+2. add DemoPermissions.
 
 2019.10.04
 
