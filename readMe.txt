@@ -37,5 +37,7 @@
 201910.14
 
 1. add DemoReplugin.
+2. add DemoBaseNDK.
 
 201910.15
+
