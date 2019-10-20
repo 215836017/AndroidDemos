@@ -35,3 +35,7 @@
 1. add DemoNDK_mk and DemoNDK_CMake.
 
 201910.14
+
+1. add DemoReplugin.
+
+201910.15
