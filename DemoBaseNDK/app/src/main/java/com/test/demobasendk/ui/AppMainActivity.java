@@ -96,7 +96,9 @@ public class AppMainActivity extends AppCompatActivity implements AdapterView.On
                 break;
 
             case 13:
+                JniUtil.startNewThread();
                 break;
+
             case 14:
                 break;
             case 15:

@@ -15,6 +15,7 @@
         <item>基本类型--boolean_array</item>
         <item>基本类型--String</item>
         <item>基本类型--String_array</item>
+        <item>在JNI开启新的线程</item>
     </string-array>
 
 </resources>

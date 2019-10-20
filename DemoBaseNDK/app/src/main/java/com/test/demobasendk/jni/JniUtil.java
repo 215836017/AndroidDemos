@@ -33,6 +33,7 @@ public class JniUtil {
 
     public static native String[] setStringArray(String[] params);
 
+    public static native void startNewThread();  // 在JNI中开启新的线程
 
     public static class JniLogLevel {
         /*** JNI中log级别：不打印任何日志 */

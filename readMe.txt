@@ -46,3 +46,8 @@
 
 2019.10.17
 
+1. modify some file about NDK
+2. add DemoSensor and DemoTelephony.
+
+2019.10.18
+
