@@ -1,3 +1,20 @@
 <resources>
     <string name="app_name">DemoBaseNDK</string>
+
+    <string-array name="operaions">
+        <item>跳转到下一界面</item>
+        <item>基本类型--int</item>
+        <item>基本类型--int_array</item>
+        <item>基本类型--long</item>
+        <item>基本类型--long_array</item>
+        <item>基本类型--float</item>
+        <item>基本类型--float_array</item>
+        <item>基本类型--double</item>
+        <item>基本类型--double_array</item>
+        <item>基本类型--boolean</item>
+        <item>基本类型--boolean_array</item>
+        <item>基本类型--String</item>
+        <item>基本类型--String_array</item>
+    </string-array>
+
 </resources>

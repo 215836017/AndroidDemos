@@ -1,0 +1,7 @@
+
+#ifndef DEMOBASENDK_GLOBAL_H
+#define DEMOBASENDK_GLOBAL_H
+
+#define baseNDK_Verion 0.1
+
+#endif //DEMOBASENDK_GLOBAL_H

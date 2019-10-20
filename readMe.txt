@@ -41,3 +41,8 @@
 3. modify DemoNDK_CMake.
 201910.15
 
+1. modify DemoBaseNDK.
+2. add DemoSendFiles.
+
+2019.10.17
+
