@@ -19,4 +19,7 @@
 
 2019.10.04
 
+1. add DemoCalculateDistance and DemoContentResolver.
+
+2019.10.10
 
