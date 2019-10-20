@@ -15,6 +15,7 @@
 
 1. add DemoIntentService.
 2. add DemoPermissions.
+3. add DemoRecyclerView.
 
 2019.10.04
 
