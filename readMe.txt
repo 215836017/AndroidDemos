@@ -56,3 +56,7 @@
 
 2019.10.19
 
+1. modif DemoPermissions
+
+2019.11.22
+
