@@ -1,0 +1,67 @@
+<resources>
+    <string name="app_name">DemoAudio</string>
+
+
+    <string-array name="audioPlayer_items">
+        <item>SoundPool</item>
+        <item>MediaPlayer</item>
+        <item>AudioTrack</item>
+        <item>Ringtone</item>
+    </string-array>
+
+    <!-- soundPool 界面中相关的字符串 start-->
+    <string name="sound_1">播放音效1</string>
+    <string name="sound_2">播放音效2</string>
+    <string name="sound_3">播放音效3</string>
+    <string name="sound_stop">停止播放</string>
+    <!-- soundPool 界面中相关的字符串 end-->
+
+    <!-- mediaPlayer 界面中相关的字符串 start-->
+    <string name="load_from_raw">load audio from raw</string>
+    <string name="load_from_sdcard">load audio from sdcard</string>
+    <string name="load_from_uri">load audio from uri</string>
+    <string name="audio_start">开始</string>
+    <string name="audio_pause">暂停</string>
+    <string name="audio_previous">上一首</string>
+    <string name="audio_next">下一首</string>
+    <string name="playMode_list_order">顺序播放</string>
+    <string name="playMode_list_loop">列表循环</string>
+    <string name="playMode_signal_loop">单曲循环</string>
+    <string name="playMode_random">随机播放</string>
+
+    <string name="mediaPlayer_dialog_sorry">Sorry!</string>
+    <string name="mediaPlayer_dialog_sure">确定</string>
+    <string name="mediaPlayer_readMe">说明：因为只是一个demo工程，没有检查文件是否存在。所以在
+        选择了“load audio from sdcard”后，需要在sdcard根目录下存放sdcard/a.mp3,sdcard/b.mp3,sdcard/b.mp3
+        这三个文件后才能正常使用</string>
+    <string name="mediaPlayer_raw_reason">因为MediaPlayer播放raw中的音频文件和sdcard中的音频文件时，
+        除了加载音频资源时的方式不同外，其他的都相同。而且播放raw路径下的文件只能用MediaPlayer.create()
+        方法声明MediaPlayer实例，所以播放raw的代码暂不实现</string>
+    <string name="mediaPlayer_uri_reason">因为MediaPlayer播放sdcard中的文件和网络流文件时，除了加载音
+        频资源时的方式不同外，其他的都相同。又考虑到访问网络，申请权限需要兼容Android6前后的版本，因此加载
+        和播放网络音频资源的代码暂不实现</string>
+    <!-- mediaPlayer 界面中相关的字符串 end-->
+
+
+    <!-- audioTrack 界面中相关的字符串 start-->
+    <string name="at_play_wav1">play_WAV_1</string>
+    <string name="at_play_wav2">play_WAV_2</string>
+    <string name="at_play_pcm1">play_PCM_1</string>
+    <string name="at_play_pcm2">play_PCM_2</string>
+    <string name="at_stop">stop</string>
+    <string name="at_text_readMe">AudioTrack 直接支持WAV和PCM，其他音频需要解码成PCM格式才能播放。
+        (其他无损格式没有尝试，有兴趣可以使本文提供的例子测试一下),并且是流模式，所以这里通过从sdcard
+    读取音频流来进行播放。所以在sdcard根目录下要有sdcard/a.wav, sdcard/b.wav, sdcard/a.pcm, sdcard/b.pcm
+    这四个音频文件。</string>
+    <string name="at_noFile">音频文件不存在！</string>
+    <!-- audioTrack 界面中相关的字符串 end-->
+
+
+    <!-- ringtone 界面中相关的字符串 start-->
+    <string name="rt_phoneComing">播放来电铃声的默认音乐</string>
+    <string name="rt_randoms">随机播放一个Ringtone</string>
+    <string name="rt_ringtones">播放一个设置的来电铃声</string>
+    <string name="rt_alarms">播放一个设置的闹钟铃声</string>
+    <string name="rt_notifications">播放一个设置的通知铃声</string>
+    <!-- ringtone 界面中相关的字符串 end-->
+</resources>
