@@ -1,5 +1,6 @@
 package com.test.demoaudio.record;
 
+import android.media.AudioFormat;
 import android.media.AudioRecord;
 import android.media.MediaRecorder;
 import android.os.Bundle;
@@ -7,14 +8,17 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.test.demoaudio.R;
+import com.test.demoaudio.utils.LogUtil;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 
 /**
  * 使用AudioRecord的类。AudioRecord是三个方法中最灵活的（由于他同意訪问原始音频流），可是他是拥有最少的内置功能。如不会自己主动压缩音频等等。
@@ -33,19 +37,28 @@ import java.io.FileOutputStream;
  * int audioFormat = AudioFormat.ENCODING_PCM_16BIT;
  * 最后将须要指定缓冲区大小。实际上能够查询AudioRecord类以获得最小缓冲区大小。查询方式是调用getMinBufferSize的静态方法，同一时候传入採样率，通道配置以及音频格式。
  * int bufferSizeInBytes = AudioRecord.getMinBufferSize(sampleRateInHz,channelConfig,audioFormat);
- *
+ * <p>
  * 参考链接：
  * https://www.cnblogs.com/renhui/p/7457321.html
+ *
+ * Android AudioRecord录制wav格式的音频: https://blog.csdn.net/chezi008/article/details/53064604
  */
 public class AudioRecordActivity extends AppCompatActivity {
 
+    private final String TAG = "AudioRecordActivity";
     private TextView textView;
+    private Button button;
+
     private int timeCount = 0;
 
-    private final int SAMPLERATEINHZ = 32 * 1000;
-    private final int CHANNELCONFIG = 0;
-    private final int AUDIOFORMAT = 0;
-    private boolean isRecord = false;
+//    private final int SAMPLERATEINHZ = 32 * 1000;
+//    private final int CHANNELCONFIG = 0;
+//    private final int AUDIOFORMAT = 0;
+
+    private final int SAMPLERATEINHZ = 16 * 1000;
+    private final int AUDIOFORMAT = AudioFormat.ENCODING_PCM_16BIT;
+    private final int CHANNELCONFIG = AudioFormat.CHANNEL_IN_MONO;
+    private boolean isRecording = false;
     private File rawFile;
 
     private AudioRecord audioRecord;
@@ -60,8 +73,10 @@ public class AudioRecordActivity extends AppCompatActivity {
             if (msg.what == MSG_UPDATE) {
                 textView.setText(TimeUtil.getTime(timeCount));
 
-                timeCount++;
-                handler.sendEmptyMessageDelayed(MSG_UPDATE, 1000);
+                if (isRecording) {
+                    timeCount++;
+                    handler.sendEmptyMessageDelayed(MSG_UPDATE, 1000);
+                }
 
             }
         }
@@ -85,23 +100,27 @@ public class AudioRecordActivity extends AppCompatActivity {
         }
     }
 
-    public void audioRecordBtnClick(View view) {
-        if (view.getId() == R.id.audioRecord_btnStart) {
-            startRecord();
-        } else if (view.getId() == R.id.audioRecord_btnStop) {
-            stopRecord();
-        }
-    }
-
     private void initViews() {
         textView = findViewById(R.id.audioRecord_text);
+        button = findViewById(R.id.audioRecord_btnStart);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (isRecording) {
+                    stopRecord();
+                } else {
+                    startRecord();
+                }
+            }
+        });
     }
 
     private void init() {
         recordBuffSize = AudioRecord.getMinBufferSize(SAMPLERATEINHZ, CHANNELCONFIG, AUDIOFORMAT);
-        audioRecord = new AudioRecord(MediaRecorder.AudioSource.MIC, SAMPLERATEINHZ, CHANNELCONFIG,
-                AUDIOFORMAT, recordBuffSize);
         recordDatas = new byte[recordBuffSize];
+        LogUtil.i(TAG, "init() -- recordBuffSize = " + recordBuffSize);
+        audioRecord = new AudioRecord(MediaRecorder.AudioSource.MIC, SAMPLERATEINHZ,
+                CHANNELCONFIG, AUDIOFORMAT, recordBuffSize);
 
         String filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/recordAudio/test.raw";
         rawFile = new File(filePath);
@@ -118,13 +137,15 @@ public class AudioRecordActivity extends AppCompatActivity {
     }
 
     private void startRecord() {
+        isRecording = true;
+        button.setText("结束录音");
         handler.sendEmptyMessage(MSG_UPDATE);
         doRecord();
     }
 
     private void stopRecord() {
-        handler.removeMessages(MSG_UPDATE);
-        isRecord = false;
+        isRecording = false;
+        button.setText("开始录音");
     }
 
     private void doRecord() {
@@ -134,20 +155,34 @@ public class AudioRecordActivity extends AppCompatActivity {
             public void run() {
                 super.run();
 
+                isRecording = true;
+                FileOutputStream fo = null;
                 try {
-                    FileOutputStream fo = new FileOutputStream(rawFile);
+                    fo = new FileOutputStream(rawFile);
                     audioRecord.startRecording();
+                    int audioRecordState = audioRecord.getState();
+                    LogUtil.i(TAG, "audioRecordState = " + audioRecordState);
                     int len;
-                    while (isRecord) {
+                    while (isRecording) {
                         len = audioRecord.read(recordDatas, 0, recordBuffSize);
+                        LogUtil.i(TAG, "len = " + len);
                         if (AudioRecord.ERROR_INVALID_OPERATION != len) {
+                            LogUtil.i(TAG, "recordDatas.len = " + recordDatas.length);
                             fo.write(recordDatas);
                         }
                     }
 
-                    fo.close();
-                    fo = null;
                 } catch (Exception e) {
+                    LogUtil.e(TAG, "doRecord()--error: " + e.getMessage());
+                } finally {
+                    if (null != fo) {
+                        try {
+                            fo.close();
+                            fo = null;
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
                 }
             }
         }.start();

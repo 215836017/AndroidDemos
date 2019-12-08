@@ -14,6 +14,8 @@ import com.test.demoaudio.player.AudioTrack.AudioTrackActivity;
 import com.test.demoaudio.player.Ringtone.RingtoneActivity;
 import com.test.demoaudio.player.mediaPlayer.MediaPlayerActivity;
 import com.test.demoaudio.player.soundPool.SoundPoolActivity;
+import com.test.demoaudio.record.AudioRecordActivity;
+import com.test.demoaudio.record.MediaRecorderActivity;
 
 /**
  * https://www.cnblogs.com/HDK2016/p/8043247.html
@@ -30,7 +32,9 @@ public class MainActivity extends AppCompatActivity {
             SoundPoolActivity.class,
             MediaPlayerActivity.class,
             AudioTrackActivity.class,
-            RingtoneActivity.class
+            RingtoneActivity.class,
+            AudioRecordActivity.class,
+            MediaRecorderActivity.class
     };
 
     @Override

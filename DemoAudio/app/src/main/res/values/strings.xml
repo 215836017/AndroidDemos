@@ -7,6 +7,8 @@
         <item>MediaPlayer</item>
         <item>AudioTrack</item>
         <item>Ringtone</item>
+        <item>AudioRecord</item>
+        <item>MediaRecorder</item>
     </string-array>
 
     <!-- soundPool 界面中相关的字符串 start-->

@@ -4,6 +4,7 @@ import android.media.AudioFormat;
 import android.media.AudioManager;
 import android.media.AudioTrack;
 import android.os.Bundle;
+import android.os.Environment;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -16,14 +17,15 @@ import com.test.demoaudio.utils.LogUtil;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 
 /**
  * 1. 学习链接：
  * https://www.cnblogs.com/mfmdaoyou/p/7348969.html
- *
- *  需要关注的用户 1. https://www.jianshu.com/p/1029be871bcf
- *                2. https://blog.csdn.net/itachi85/article/details/54695046/
- *
+ * <p>
+ * 需要关注的用户 1. https://www.jianshu.com/p/1029be871bcf
+ * 2. https://blog.csdn.net/itachi85/article/details/54695046/
+ * <p>
  * 2. AudioTrack 属于更偏底层的音频播放，MediaPlayerService的内部就是使用了AudioTrack。
  * 3. AudioTrack 直接支持WAV和PCM，其他音频需要解码成PCM格式才能播放。(其他无损格式没有尝试，有兴趣可以使本文提供的例子测试一下)
  */
@@ -36,7 +38,7 @@ public class AudioTrackActivity extends AppCompatActivity implements View.OnClic
     private Button btnStop;
 
     private String[] audioPaths = {
-            "sdcard/a.pcm",
+            "sdcard/a.pcm",     
             "sdcard/b.pcm",
             "sdcard/a.wav",
             "sdcard/b.wav"
@@ -73,8 +75,10 @@ public class AudioTrackActivity extends AppCompatActivity implements View.OnClic
       AudioTrack(int streamType, int sampleRateInHz, int channelConfig, int audioFormat,
             int bufferSizeInBytes, int mode)
          */
-        audioTrack = new AudioTrack(AudioManager.STREAM_MUSIC, 32 * 1000, AudioFormat.CHANNEL_OUT_STEREO,
-                AudioFormat.ENCODING_PCM_16BIT, AudioTrack.MODE_STREAM, 0);
+        int minBufferSize = AudioTrack.getMinBufferSize(16 * 1000, AudioFormat.CHANNEL_OUT_MONO,
+                AudioFormat.ENCODING_PCM_16BIT);
+        audioTrack = new AudioTrack(AudioManager.STREAM_MUSIC, 16 * 1000, AudioFormat.CHANNEL_OUT_MONO,
+                AudioFormat.ENCODING_PCM_16BIT, minBufferSize, AudioTrack.MODE_STREAM);
     }
 
     private void addListeners() {
@@ -90,7 +94,8 @@ public class AudioTrackActivity extends AppCompatActivity implements View.OnClic
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.audioTrackAct_btn_playPCM_1:
-                readAudioFiles(audioPaths[0]);
+//                readAudioFiles(audioPaths[0]);
+                readPCMFile();
                 break;
 
             case R.id.audioTrackAct_btn_playPCM_2:
@@ -125,6 +130,39 @@ public class AudioTrackActivity extends AppCompatActivity implements View.OnClic
         } else {
             getBytesFromFile(file);
         }
+    }
+
+    private void readPCMFile() {
+
+        final String filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/recordAudio/test.raw";
+        new Thread() {
+            @Override
+            public void run() {
+                super.run();
+                try {
+                    LogUtil.i(tag, "readPCMFile() --- 111111111111");
+                    byte[] datas = new byte[3200];
+                    FileInputStream fileInputStream = new FileInputStream(filePath);
+                    int readCount = -1;
+                    while (fileInputStream.read(datas) != -1) {
+                        LogUtil.i(tag, "readPCMFile() --- 222222222222");
+                        if (readCount == AudioTrack.ERROR_INVALID_OPERATION || readCount == AudioTrack.ERROR_BAD_VALUE) {
+                            continue;
+                        }
+
+                        if (readCount != 0) {
+                            LogUtil.i(tag, "readPCMFile() --- 333333333");
+                            audioTrack.play();
+                            audioTrack.write(datas, 0, datas.length);
+                        }
+                    }
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }.start();
     }
 
     private void getBytesFromFile(File file) {
