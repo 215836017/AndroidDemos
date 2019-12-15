@@ -1,3 +1,5 @@
+录音相关文章：
+https://blog.csdn.net/chuyangchangxi/article/details/91383932
 
 一、AudioRecord
 使用AudioRecord的类。AudioRecord是三个方法中最灵活的（由于他同意訪问原始音频流），可是他是拥有最少的内置功能。如不会自己主动压缩音频等等。

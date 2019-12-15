@@ -62,3 +62,6 @@
 
 1. modify DemoAudio
 2019.12.11
+
+1. modify DemoAudio about MediaRecorder.
+2019.12.12

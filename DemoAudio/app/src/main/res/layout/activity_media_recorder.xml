@@ -14,11 +14,18 @@
         tools:text="TextView" />
 
     <Button
-        android:id="@+id/media_record_btn_test"
+        android:id="@+id/media_record_btn_start"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
         android:text="开始录制" />
+
+    <Button
+        android:id="@+id/media_record_btn_pause"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:text="暂停录制" />
 
 
 </LinearLayout>

@@ -21,7 +21,7 @@ public class MediaRecorderActivity extends BaseActivity {
 
     private final String TAG = "MediaRecorderActivity";
     private TextView textView;
-    private Button btnTest;
+    private Button btnRecord, btnPause;
     private int timeCount = 0;
     private boolean isRocrding = false;
     private MediaRecorder mediaRecorder;
@@ -62,23 +62,41 @@ public class MediaRecorderActivity extends BaseActivity {
 
     private void initViews() {
         textView = findViewById(R.id.mediaRecord_text);
-        btnTest = findViewById(R.id.media_record_btn_test);
+        btnRecord = findViewById(R.id.media_record_btn_start);
+        btnPause = findViewById(R.id.media_record_btn_pause);
 
-        btnTest.setOnClickListener(new View.OnClickListener() {
+        btnRecord.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
                 if (!hasPermission(Manifest.permission.RECORD_AUDIO)) {
-                    showToast("需要在系统设置中同意该APP的录音权限！");
+                    showToast(TOAST_PERMISSION_AUDIO);
                     return;
                 }
+                if (!hasPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                    showToast(TOAST_PERMISSION_FILE);
+                    return;
+                }
+
                 initAudio();
                 mediaRecordBtnClick();
+            }
+        });
+
+        btnPause.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                pauseRecord();
             }
         });
     }
 
     private void initAudio() {
+
+        if (null != mediaRecorder) {
+            return;
+        }
+
         mediaRecorder = new MediaRecorder();
         mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);  // 设置音频录入源
         // 设置录制音频的输出格式
@@ -107,13 +125,13 @@ public class MediaRecorderActivity extends BaseActivity {
     public void mediaRecordBtnClick() {
         if (isRocrding) {
             isRocrding = false;
-            btnTest.setText("开始录制");
+            btnRecord.setText("开始录制");
             stopRecord();
 
         } else {
 
             isRocrding = true;
-            btnTest.setText("停止录制");
+            btnRecord.setText("停止录制");
             startRecord();
         }
     }
@@ -129,6 +147,11 @@ public class MediaRecorderActivity extends BaseActivity {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+
+    private void pauseRecord() {
+
     }
 
     private void stopRecord() {

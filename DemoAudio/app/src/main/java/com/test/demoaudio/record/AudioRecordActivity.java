@@ -85,9 +85,15 @@ public class AudioRecordActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 if (!hasPermission(Manifest.permission.RECORD_AUDIO)) {
-                    showToast("需要在系统设置中同意该APP的录音权限！");
+                    showToast(TOAST_PERMISSION_AUDIO);
                     return;
                 }
+
+                if (!hasPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                    showToast(TOAST_PERMISSION_FILE);
+                    return;
+                }
+
                 initAudio();
                 handlePcmEvent();
             }
@@ -97,7 +103,12 @@ public class AudioRecordActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 if (!hasPermission(Manifest.permission.RECORD_AUDIO)) {
-                    showToast("需要在系统设置中同意该APP的录音权限！");
+                    showToast(TOAST_PERMISSION_AUDIO);
+                    return;
+                }
+
+                if (!hasPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                    showToast(TOAST_PERMISSION_FILE);
                     return;
                 }
                 initAudio();
@@ -107,13 +118,12 @@ public class AudioRecordActivity extends BaseActivity {
     }
 
     private void initAudio() {
-        if (null == audioRecord) {
-            recordBuffSize = AudioRecord.getMinBufferSize(SAMPLERATEINHZ, CHANNELCONFIG, AUDIOFORMAT);
-            recordDatas = new byte[recordBuffSize];
-            LogUtil.i(TAG, "initAudio() -- recordBuffSize = " + recordBuffSize);
-            audioRecord = new AudioRecord(MediaRecorder.AudioSource.MIC, SAMPLERATEINHZ,
-                    CHANNELCONFIG, AUDIOFORMAT, recordBuffSize);
-        }
+
+        recordBuffSize = AudioRecord.getMinBufferSize(SAMPLERATEINHZ, CHANNELCONFIG, AUDIOFORMAT);
+        recordDatas = new byte[recordBuffSize];
+        LogUtil.i(TAG, "initAudio() -- recordBuffSize = " + recordBuffSize);
+        audioRecord = new AudioRecord(MediaRecorder.AudioSource.MIC, SAMPLERATEINHZ,
+                CHANNELCONFIG, AUDIOFORMAT, recordBuffSize);
     }
 
     private File createFile(String filePath) {
@@ -126,13 +136,12 @@ public class AudioRecordActivity extends BaseActivity {
             }
             try {
                 file.createNewFile();
-
-                return file;
             } catch (Exception e) {
+                return null;
             }
         }
 
-        return null;
+        return file;
     }
 
     private void handlePcmEvent() {
@@ -150,28 +159,31 @@ public class AudioRecordActivity extends BaseActivity {
                 return;
             }
             isRecording = true;
+            timeCount = 0;
             btnPcm.setText("停止录制PCM");
             btnWav.setClickable(false);
+
             handler.sendEmptyMessage(MSG_UPDATE_TIME);
             recordPcm(file);
         }
     }
 
     private void handleWavEvent() {
+
         if (isRecording) {
             isRecording = false;
             btnWav.setText("开始录制WAV");
             btnPcm.setClickable(true);
 
         } else {
-
-            String filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/recordAudio/test.raw";
+            String filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/recordAudio/test.wav";
             File file = createFile(filePath);
             if (null == file) {
                 showToast("WAV文件创建失败");
                 return;
             }
             isRecording = true;
+            timeCount = 0;
             btnWav.setText("停止录制WAV");
             btnPcm.setClickable(false);
             handler.sendEmptyMessage(MSG_UPDATE_TIME);
@@ -201,7 +213,10 @@ public class AudioRecordActivity extends BaseActivity {
                             fo.write(recordDatas);
                         }
                     }
+
+                    audioRecord.stop();
                 } catch (Exception e) {
+
                 }
             }
         }.start();
@@ -215,27 +230,29 @@ public class AudioRecordActivity extends BaseActivity {
             @Override
             public void run() {
                 super.run();
+
                 FileOutputStream fo = null;
                 ByteArrayOutputStream baos = null;
                 int len = 0;
                 try {
                     fo = new FileOutputStream(file);
                     baos = new ByteArrayOutputStream();
+
+                    audioRecord.startRecording();
                     while (isRecording) {
                         len = audioRecord.read(recordDatas, 0, recordBuffSize);
+                        LogUtil.i(TAG, "recordWav() --- len = " + len + ", recordDatas.len = " + recordDatas.length);
                         if (AudioRecord.ERROR_INVALID_OPERATION != len) {
-                            LogUtil.i(TAG, "recordDatas.len = " + recordDatas.length);
                             baos.write(recordDatas, 0, len);
                         }
                     }
+                    audioRecord.stop();
 
                     byte[] allAuidoBytes = baos.toByteArray();
                     fo.write(PcmToWavUtil.getWavHeader(CHANNELCONFIG, allAuidoBytes.length, SAMPLERATEINHZ));
                     fo.write(allAuidoBytes);
 
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
