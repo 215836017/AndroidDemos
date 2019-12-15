@@ -1,4 +1,4 @@
-package com.test.demoaudio.player.soundPool;
+package com.test.demoaudio.player.soundpool;
 
 import android.os.Bundle;
 import android.view.View;

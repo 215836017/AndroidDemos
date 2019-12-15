@@ -1,10 +1,9 @@
-package com.test.demoaudio.player.AudioTrack;
+package com.test.demoaudio.player.audiotrack;
 
 import android.media.AudioFormat;
 import android.media.AudioManager;
 import android.media.AudioTrack;
 import android.os.Bundle;
-import android.os.Environment;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -37,12 +36,14 @@ public class AudioTrackActivity extends AppCompatActivity implements View.OnClic
     private Button btnWAV1, btnWAV2;
     private Button btnStop;
 
-    private String[] audioPaths = {
-            "sdcard/a.pcm",     
-            "sdcard/b.pcm",
-            "sdcard/a.wav",
-            "sdcard/b.wav"
-    };
+    /*** 在AudioRecordActivity中录制的 */
+    private String myPcmFilePath = "";
+    /*** 从网上下载的 */
+    private String downloadPcmFilePath = "";
+    /*** 在AudioRecordActivity中录制的 */
+    private String myWavFilePath = "";
+    /*** 从网上下载的 */
+    private String downloadWavFilePath = "";
 
     private AudioTrack audioTrack;
 
@@ -94,20 +95,19 @@ public class AudioTrackActivity extends AppCompatActivity implements View.OnClic
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.audioTrackAct_btn_playPCM_1:
-//                readAudioFiles(audioPaths[0]);
-                readPCMFile();
+                readPCMFile(myPcmFilePath);
                 break;
 
             case R.id.audioTrackAct_btn_playPCM_2:
-                readAudioFiles(audioPaths[1]);
+                readPCMFile(downloadPcmFilePath);
                 break;
 
             case R.id.audioTrackAct_btn_playWAV_1:
-                readAudioFiles(audioPaths[2]);
+                readWavFile(myWavFilePath);
                 break;
 
             case R.id.audioTrackAct_btn_playWAV_2:
-                readAudioFiles(audioPaths[3]);
+                readWavFile(downloadWavFilePath);
                 break;
 
             case R.id.audioTrackAct_btn_stop:
@@ -122,7 +122,7 @@ public class AudioTrackActivity extends AppCompatActivity implements View.OnClic
        1. https://www.jianshu.com/p/632dce664c3d
        2. https://www.jianshu.com/p/c67fd0c2b379
      */
-    private void readAudioFiles(String path) {
+    private void readWavFile(String path) {
         File file = new File(path);
 
         if (!file.exists()) {
@@ -132,9 +132,9 @@ public class AudioTrackActivity extends AppCompatActivity implements View.OnClic
         }
     }
 
-    private void readPCMFile() {
+    private void readPCMFile(final String filePath) {
 
-        final String filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/recordAudio/test.raw";
+        // final String filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/recordAudio/test.raw";
         new Thread() {
             @Override
             public void run() {

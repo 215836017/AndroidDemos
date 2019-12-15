@@ -1,4 +1,4 @@
-package com.test.demoaudio.player.AudioTrack;
+package com.test.demoaudio.player.audiotrack;
 
 import android.media.AudioFormat;
 import android.media.AudioManager;

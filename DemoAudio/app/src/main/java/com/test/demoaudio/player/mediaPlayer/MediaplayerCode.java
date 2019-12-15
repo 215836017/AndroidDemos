@@ -1,4 +1,4 @@
-package com.test.demoaudio.player.mediaPlayer;
+package com.test.demoaudio.player.mediaplayer;
 
 public class MediaplayerCode {
 

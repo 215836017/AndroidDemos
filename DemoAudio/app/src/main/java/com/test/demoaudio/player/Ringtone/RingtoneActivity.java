@@ -1,4 +1,4 @@
-package com.test.demoaudio.player.Ringtone;
+package com.test.demoaudio.player.ringtone;
 
 import android.content.Intent;
 import android.database.Cursor;

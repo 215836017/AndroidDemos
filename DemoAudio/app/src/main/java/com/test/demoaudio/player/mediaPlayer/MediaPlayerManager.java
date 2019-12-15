@@ -1,4 +1,4 @@
-package com.test.demoaudio.player.mediaPlayer;
+package com.test.demoaudio.player.mediaplayer;
 
 import android.content.Context;
 import android.media.MediaPlayer;
