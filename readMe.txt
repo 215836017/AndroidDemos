@@ -65,3 +65,6 @@
 
 1. modify DemoAudio about MediaRecorder.
 2019.12.12
+
+1.modify DemoAudio about SoundPool
+2019.12.13

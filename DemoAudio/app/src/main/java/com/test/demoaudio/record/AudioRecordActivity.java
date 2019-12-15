@@ -19,10 +19,11 @@ import com.test.demoaudio.utils.TimeUtil;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.IOException;
 
+/**
+ * 使用AudioRecord进行录音，并保存在本地
+ */
 public class AudioRecordActivity extends BaseActivity {
 
     private final String TAG = "AudioRecordActivity";

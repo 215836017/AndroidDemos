@@ -2,6 +2,7 @@ package com.test.demoaudio.record;
 
 import android.Manifest;
 import android.media.MediaRecorder;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -17,6 +18,9 @@ import com.test.demoaudio.utils.TimeUtil;
 
 import java.io.IOException;
 
+/**
+ * 使用MediaRecorder进行录音(不录制视频)，并保存在本地
+ */
 public class MediaRecorderActivity extends BaseActivity {
 
     private final String TAG = "MediaRecorderActivity";
@@ -25,6 +29,7 @@ public class MediaRecorderActivity extends BaseActivity {
     private int timeCount = 0;
     private boolean isRocrding = false;
     private MediaRecorder mediaRecorder;
+    private boolean isPaused = false;
 
     private final int MSG_UPDATE = 0x11;
     private Handler handler = new Handler() {
@@ -110,6 +115,7 @@ public class MediaRecorderActivity extends BaseActivity {
         mediaRecorder.setOnErrorListener(new MediaRecorder.OnErrorListener() {
             @Override
             public void onError(MediaRecorder mr, int what, int extra) {
+                LogUtil.e(TAG, "OnErrorListener()-- what = " + what + ", extra = " + extra);
                 stopRecord();
             }
         });
@@ -117,7 +123,7 @@ public class MediaRecorderActivity extends BaseActivity {
         mediaRecorder.setOnInfoListener(new MediaRecorder.OnInfoListener() {
             @Override
             public void onInfo(MediaRecorder mr, int what, int extra) {
-                LogUtil.i(TAG, "initAudio() -- onInfo() -- what = " + what + ", extra = " + extra);
+                LogUtil.i(TAG, "OnInfoListener() -- onInfo() -- what = " + what + ", extra = " + extra);
             }
         });
     }
@@ -126,39 +132,55 @@ public class MediaRecorderActivity extends BaseActivity {
         if (isRocrding) {
             isRocrding = false;
             btnRecord.setText("开始录制");
+            btnPause.setClickable(false);
             stopRecord();
 
         } else {
-
             isRocrding = true;
             btnRecord.setText("停止录制");
+            isPaused = false;
+            btnPause.setText("暂停录制");
             startRecord();
         }
     }
 
-
     private void startRecord() {
         handler.sendEmptyMessage(MSG_UPDATE);
-
         try {
             mediaRecorder.prepare();
-            isRocrding = true;
             mediaRecorder.start();
         } catch (IOException e) {
-            e.printStackTrace();
+            LogUtil.e(TAG, "startRecord() -- error = " + e.getMessage());
         }
     }
 
-
     private void pauseRecord() {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
+            showToast("暂停功能需要Android7.0及以上版本！");
+            return;
+        }
 
+        if (isPaused) {
+            isPaused = false;
+            btnPause.setText("暂停录制");
+            mediaRecorder.resume();
+
+        } else {
+            isPaused = true;
+            btnPause.setText("继续录制");
+            mediaRecorder.pause();
+        }
     }
 
     private void stopRecord() {
         handler.removeMessages(MSG_UPDATE);
-        isRocrding = false;
         if (null != mediaRecorder) {
-            mediaRecorder.stop();
+            try {
+                mediaRecorder.stop();
+            } catch (Exception e) {
+                LogUtil.e(TAG, "stopRecord() -- error = " + e.getMessage());
+                mediaRecorder.reset();
+            }
             mediaRecorder.release();
             mediaRecorder = null;
         }

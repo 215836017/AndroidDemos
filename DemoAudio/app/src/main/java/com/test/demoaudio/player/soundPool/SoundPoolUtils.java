@@ -5,15 +5,15 @@ import android.media.AudioManager;
 import android.media.SoundPool;
 
 import com.test.demoaudio.R;
+import com.test.demoaudio.utils.LogUtil;
 
 public class SoundPoolUtils {
 
-    private static final String tag = "SoundPoolUtils.java";
-    /**
-     * 当前正在播放的音效id
-     */
-    private int playedId = -1;
-    private boolean isPlaying = false;
+    private static final String tag = "SoundPoolUtils";
+
+    private int playedIdForRingSynthShree = -1;
+    private int playedIdForHassium = -1;
+    private int playedIdForUmbriel = -1;
 
     // SoundPool对象
     private SoundPool mSoundPlayer;
@@ -40,28 +40,53 @@ public class SoundPoolUtils {
     /**
      * 播放ring_synth_three音效
      */
-    public void playSoundForRingSynthShree() {
+    public int playSoundForRingSynthShree() {
         init();
-        isPlaying = true;
-        playedId = mSoundPlayer.play(loadRingSynthShree, 1, 1, 0, -1, 1);
+        playedIdForRingSynthShree = mSoundPlayer.play(loadRingSynthShree, 1, 1, 0, -1, 1);
+        LogUtil.i(tag, "playSoundForRingSynthShree() -- playedIdForRingSynthShree = " + playedIdForRingSynthShree);
+        return playedIdForRingSynthShree;
+    }
+
+    /**
+     * 停止播放ring_synth_three音效
+     */
+    public void stopSoundForRingSynthShree() {
+        mSoundPlayer.stop(playedIdForRingSynthShree);
     }
 
     /**
      * 播放hassium音效
      */
-    public void playSoundForHassium() {
+    public int playSoundForHassium() {
         init();
-        isPlaying = true;
-        playedId = mSoundPlayer.play(loadHassium, 1, 1, 0, -1, 1);
+        playedIdForHassium = mSoundPlayer.play(loadHassium, 1, 1, 0, -1, 1);
+        LogUtil.i(tag, "playSoundForHassium() -- playedIdForHassium = " + playedIdForHassium);
+        return playedIdForHassium;
+    }
+
+    /**
+     * 停止播放hassium音效
+     */
+    public void stopSoundForHassium() {
+        mSoundPlayer.stop(playedIdForHassium);
     }
 
     /**
      * 播放umbriel音效
      */
-    public void playSoundForUmbriel() {
+    public int playSoundForUmbriel() {
         init();
-        isPlaying = true;
-        playedId = mSoundPlayer.play(loadUmbriel, 1, 1, 0, -1, 1);
+        playedIdForUmbriel = mSoundPlayer.play(loadUmbriel, 1, 1, 0, -1, 1);
+        LogUtil.i(tag, "playSoundForUmbriel() -- playedIdForUmbriel = " + playedIdForUmbriel);
+
+        return playedIdForUmbriel;
+    }
+
+    /**
+     * 停止播放umbriel音效
+     */
+    public void stopSoundForUmbriel() {
+        mSoundPlayer.stop(playedIdForUmbriel);
     }
 
     /**
@@ -69,10 +94,16 @@ public class SoundPoolUtils {
      */
     public void stopSound() {
         if (null != mSoundPlayer) {
-            if (isPlaying) {
-                mSoundPlayer.stop(playedId);
-                isPlaying = false;
-            }
+//            if (playedIdForUmbriel > 0) {
+            mSoundPlayer.stop(playedIdForRingSynthShree);
+//            }
+//            if (playedIdForUmbriel > 0) {
+            mSoundPlayer.stop(playedIdForHassium);
+//            }
+//            if (playedIdForUmbriel > 0) {
+            mSoundPlayer.stop(playedIdForUmbriel);
+//            }
+
 
             mSoundPlayer.release();
             mSoundPlayer = null;

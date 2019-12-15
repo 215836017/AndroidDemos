@@ -152,7 +152,8 @@ public class PcmToWavUtil {
         long byteRate = sampleRate * 2 * mChannels;
 
         byte[] header = new byte[44];
-        header[0] = 'R';  // RIFF/WAVE header
+        // RIFF/WAVE header
+        header[0] = 'R';
         header[1] = 'I';
         header[2] = 'F';
         header[3] = 'F';
@@ -164,15 +165,21 @@ public class PcmToWavUtil {
         header[9] = 'A';
         header[10] = 'V';
         header[11] = 'E';
-        header[12] = 'f';  // 'fmt ' chunk
+
+        // 'fmt ' chunk
+        header[12] = 'f';
         header[13] = 'm';
         header[14] = 't';
         header[15] = ' ';
-        header[16] = 16;  // 4 bytes: size of 'fmt ' chunk
+
+        // 4 bytes: size of 'fmt ' chunk
+        header[16] = 16;
         header[17] = 0;
         header[18] = 0;
         header[19] = 0;
-        header[20] = 1;  // format = 1
+
+        // format = 1
+        header[20] = 1;
         header[21] = 0;
         header[22] = (byte) mChannels;
         header[23] = 0;
@@ -184,9 +191,11 @@ public class PcmToWavUtil {
         header[29] = (byte) ((byteRate >> 8) & 0xff);
         header[30] = (byte) ((byteRate >> 16) & 0xff);
         header[31] = (byte) ((byteRate >> 24) & 0xff);
-        header[32] = (byte) (2 * mChannels);  // block align
+        // block align
+        header[32] = (byte) (2 * mChannels);
         header[33] = 0;
-        header[34] = 16;  // bits per sample
+        // bits per sample
+        header[34] = 16;
         header[35] = 0;
         header[36] = 'd';
         header[37] = 'a';

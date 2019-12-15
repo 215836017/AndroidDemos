@@ -11,7 +11,6 @@ import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 
 public class BaseActivity extends AppCompatActivity {
 
-
     public final String TOAST_PERMISSION_AUDIO = "需要在系统设置中同意该APP的录音权限！";
     public final String TOAST_PERMISSION_FILE = "需要在系统设置中同意该APP的文件权限！";
 
