@@ -176,7 +176,6 @@ public class RingtoneActivity extends AppCompatActivity implements View.OnClickL
         super.onActivityResult(requestCode, resultCode, data);
     }
 
-
     //检测是否存在指定的文件夹
     //如果不存在则创建
     private boolean bFolder(String strFolder) {

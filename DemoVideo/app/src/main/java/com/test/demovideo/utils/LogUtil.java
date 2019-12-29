@@ -10,7 +10,7 @@ public class LogUtil {
         isWriteLog = flag;
     }
 
-    private static final String LOG_TAG = "demoVideo_log ";
+    private static final String LOG_TAG = "Video_log ";
 
     public static void v(String tag, String msg) {
         if (isWriteLog) {

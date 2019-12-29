@@ -68,3 +68,6 @@
 
 1.modify DemoAudio about SoundPool
 2019.12.13
+
+1. modify DemoAudio and DemoVideo.
+2019.12.16

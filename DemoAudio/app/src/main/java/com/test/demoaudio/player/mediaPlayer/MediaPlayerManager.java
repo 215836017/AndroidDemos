@@ -1,144 +1,161 @@
 package com.test.demoaudio.player.mediaplayer;
 
-import android.content.Context;
 import android.media.MediaPlayer;
 import android.os.Handler;
+import android.os.Message;
+import android.text.TextUtils;
+import android.util.Log;
 
 import com.test.demoaudio.utils.LogUtil;
 
 import java.io.IOException;
 
-
 public class MediaPlayerManager {
+    private static final String TAG = "MediaPlayerManager";
 
-    private final String tag = "MediaPlayerManager.java";
-    private Context context;
-    private Handler handler;
-    private MediaPlayer mediaPlayer;
+    private MediaPlayer mMediaPlayer;
+    private OnMusicPlayerListener musicPlayerListener;
 
-    private boolean isGetDuration = false;
-    private int musicDuration;
+    private final int DELAY_PREPARE_FAILED = 10 * 1000;
 
-    public MediaPlayerManager(Context context, Handler handler) {
-        this.context = context;
-        this.handler = handler;
-        mediaPlayer = new MediaPlayer();
+    private final int MSG_PREPARE_SUCC = 1;
+    private final int MSG_PREPARE_FAILED = 2;
+    private Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what) {
 
-        mediaPlayerSetListeners();
-    }
+                case MSG_PREPARE_SUCC:
+                    mMediaPlayer.start();
+                    if (musicPlayerListener != null) {
+                        musicPlayerListener.onStart();
+                    }
+                    break;
 
-    private void mediaPlayerSetListeners() {
-//        mediaPlayer.setOnBufferingUpdateListener();
-//        mediaPlayer.setOnCompletionListener();
-//        mediaPlayer.setOnDrmConfigHelper();
-//        mediaPlayer.setOnDrmInfoListener();
-//        mediaPlayer.setOnDrmPreparedListener();
-//        mediaPlayer.setOnErrorListener();
-//        mediaPlayer.setOnInfoListener();
-//        mediaPlayer.setOnMediaTimeDiscontinuityListener();
-//        mediaPlayer.setOnPreparedListener();
-//        mediaPlayer.setOnSeekCompleteListener();
-//        mediaPlayer.setOnSubtitleDataListener();
-//        mediaPlayer.setOnTimedMetaDataAvailableListener();
-//        mediaPlayer.setOnTimedTextListener();
-//        mediaPlayer.setOnVideoSizeChangedListener();
-
-        mediaPlayer.setOnErrorListener(onErrorListener);
-        mediaPlayer.setOnPreparedListener(onPreparedListener);
-        mediaPlayer.setOnSeekCompleteListener(onSeekCompleteListener);
-        mediaPlayer.setOnCompletionListener(onCompletionListener);
-    }
-
-    public void setMediaplayerDataSource(String[] dataSource) {
-        mediaPlayer.reset();
-        try {
-            mediaPlayer.setDataSource(dataSource[0]);
-            mediaPlayer.prepare();
-        } catch (IOException e) {
-            e.printStackTrace();
-            handler.sendEmptyMessage(MediaplayerCode.ErrorCode.MSG_ERROR_SET_DATA_SOURCE_FAIL);
+                case MSG_PREPARE_FAILED:
+                    if (null != mMediaPlayer) {
+                        mMediaPlayer.reset();
+                    }
+                    if (musicPlayerListener != null) {
+                        musicPlayerListener.onError(1);
+                    }
+                    break;
+            }
         }
+    };
+
+    public MediaPlayerManager(OnMusicPlayerListener listener) {
+        mMediaPlayer = new MediaPlayer();
+        this.musicPlayerListener = listener;
+
+        setMediaplayerListeners();
     }
 
-
-    public void changeMusic(String musicPath) {
-
+    private void setMediaplayerListeners() {
+        mMediaPlayer.setOnErrorListener(mOnErrorListener);
+        mMediaPlayer.setOnCompletionListener(mOnCompletionListener);
+        mMediaPlayer.setOnPreparedListener(mOnPreparedListener);
     }
 
     public boolean isPlaying() {
-        return mediaPlayer.isPlaying();
+        return mMediaPlayer.isPlaying();
     }
 
-    public int getMusicDuration() {
-        return musicDuration;
+    public void play(String musicPath) {
+
+        if (TextUtils.isEmpty(musicPath)) {
+            musicPlayerListener.onError(0);
+            return;
+        }
+        prepare(musicPath);
     }
 
-    public boolean isLooping() {
-        return mediaPlayer.isLooping();
-    }
+    private void prepare(String url) {
+        LogUtil.i(TAG, "prepare() --- start");
+        try {
+            mMediaPlayer.reset();
+            mMediaPlayer.setDataSource(url);
+            mMediaPlayer.prepareAsync();
+            handler.sendEmptyMessageDelayed(MSG_PREPARE_FAILED, DELAY_PREPARE_FAILED);
 
-    public void setLoop(boolean isLoop) {
-        mediaPlayer.setLooping(isLoop);
-    }
-
-    public void start() {
-        mediaPlayer.start();
-    }
-
-    public void pause() {
-        mediaPlayer.pause();
-    }
-
-    public void stop() {
-        mediaPlayer.stop();
-    }
-
-    public void next(String musicPath){
-
-    }
-    public void release() {
-        if (null != mediaPlayer) {
-
-            if (mediaPlayer.isPlaying()) {
-
-
-                mediaPlayer.stop();
-            }
-            mediaPlayer.release();
+        } catch (IOException e1) {
+            LogUtil.d(TAG, "set datasource failed");
+            e1.printStackTrace();
         }
     }
 
-    MediaPlayer.OnErrorListener onErrorListener = new MediaPlayer.OnErrorListener() {
+    public void pausePlay() {
+//        if (mMediaPlayer.isPlaying()) {
+        mMediaPlayer.pause();
+//        }
+    }
 
+    public void resumePlay() {
+//        if(!mMediaPlayer.isPlaying()){
+
+        mMediaPlayer.start();
+//        }
+    }
+
+    public void stop() {
+        if (mMediaPlayer.isPlaying()) {
+            mMediaPlayer.stop();
+
+            if (musicPlayerListener != null) {
+                musicPlayerListener.onStop();
+            }
+        }
+    }
+
+    public void release() {
+        if (null != mMediaPlayer) {
+            mMediaPlayer.reset();
+            mMediaPlayer.release();
+            mMediaPlayer = null;
+        }
+        if (null != handler) {
+            handler.removeCallbacksAndMessages(null);
+        }
+    }
+
+    private MediaPlayer.OnPreparedListener mOnPreparedListener = new MediaPlayer.OnPreparedListener() {
+        @Override
+        public void onPrepared(MediaPlayer mp) {
+            Log.d(TAG, "onPrepared");
+            handler.removeMessages(MSG_PREPARE_FAILED);
+            handler.sendEmptyMessage(MSG_PREPARE_SUCC);
+        }
+    };
+
+    private MediaPlayer.OnErrorListener mOnErrorListener = new MediaPlayer.OnErrorListener() {
         @Override
         public boolean onError(MediaPlayer mp, int what, int extra) {
-            LogUtil.d(tag, "onErrorListener -- what = " + what + ", extra = " + extra);
+            Log.d(TAG, "onError = " + what);
+            if (musicPlayerListener != null) {
+                musicPlayerListener.onError(what);
+            }
             return false;
         }
     };
 
-    MediaPlayer.OnPreparedListener onPreparedListener = new MediaPlayer.OnPreparedListener() {
-        @Override
-        public void onPrepared(MediaPlayer mp) {
-            if (!isGetDuration) {
-                musicDuration = mp.getDuration();
-                isGetDuration = true;
-            }
-            handler.sendEmptyMessage(MediaplayerCode.EventCode.MSG_EVENT_PERPARE_OK);
-        }
-    };
-
-    MediaPlayer.OnSeekCompleteListener onSeekCompleteListener = new MediaPlayer.OnSeekCompleteListener() {
-        @Override
-        public void onSeekComplete(MediaPlayer mp) {
-
-        }
-    };
-
-    MediaPlayer.OnCompletionListener onCompletionListener = new MediaPlayer.OnCompletionListener() {
+    private MediaPlayer.OnCompletionListener mOnCompletionListener = new MediaPlayer.OnCompletionListener() {
         @Override
         public void onCompletion(MediaPlayer mp) {
-            handler.sendEmptyMessage(MediaplayerCode.EventCode.MSG_EVENT_PLAY_FINISH);
+            if (musicPlayerListener != null) {
+                musicPlayerListener.onComplete();
+            }
         }
     };
+
+    public interface OnMusicPlayerListener {
+
+        void onStart();
+
+        void onStop();
+
+        void onComplete();
+
+        void onError(int errorCode);
+    }
 }

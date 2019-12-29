@@ -1,20 +1,7 @@
 <resources>
     <string name="app_name">DemoAudio</string>
 
-
-    <string-array name="audioPlayer_items">
-        <item>SoundPool</item>
-        <item>MediaPlayer</item>
-        <item>AudioTrack</item>
-        <item>Ringtone</item>
-        <item>AudioRecord</item>
-        <item>MediaRecorder</item>
-    </string-array>
-
     <!-- mediaPlayer 界面中相关的字符串 start-->
-    <string name="load_from_raw">load audio from raw</string>
-    <string name="load_from_sdcard">load audio from sdcard</string>
-    <string name="load_from_uri">load audio from uri</string>
     <string name="audio_start">开始</string>
     <string name="audio_pause">暂停</string>
     <string name="audio_previous">上一首</string>
@@ -26,15 +13,6 @@
 
     <string name="mediaPlayer_dialog_sorry">Sorry!</string>
     <string name="mediaPlayer_dialog_sure">确定</string>
-    <string name="mediaPlayer_readMe">说明：因为只是一个demo工程，没有检查文件是否存在。所以在
-        选择了“load audio from sdcard”后，需要在sdcard根目录下存放sdcard/a.mp3,sdcard/b.mp3,sdcard/b.mp3
-        这三个文件后才能正常使用</string>
-    <string name="mediaPlayer_raw_reason">因为MediaPlayer播放raw中的音频文件和sdcard中的音频文件时，
-        除了加载音频资源时的方式不同外，其他的都相同。而且播放raw路径下的文件只能用MediaPlayer.create()
-        方法声明MediaPlayer实例，所以播放raw的代码暂不实现</string>
-    <string name="mediaPlayer_uri_reason">因为MediaPlayer播放sdcard中的文件和网络流文件时，除了加载音
-        频资源时的方式不同外，其他的都相同。又考虑到访问网络，申请权限需要兼容Android6前后的版本，因此加载
-        和播放网络音频资源的代码暂不实现</string>
     <!-- mediaPlayer 界面中相关的字符串 end-->
 
 
