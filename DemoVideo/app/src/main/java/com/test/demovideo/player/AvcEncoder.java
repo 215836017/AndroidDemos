@@ -6,13 +6,14 @@ import android.media.MediaCodecInfo;
 import android.media.MediaFormat;
 import android.os.Environment;
 
+import com.test.demovideo.utils.LogUtil;
+
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 
-import com.test.demovideo.utils.LogUtil;
 
 public class AvcEncoder {
     private final static String TAG = "MeidaCodec";

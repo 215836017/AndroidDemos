@@ -15,6 +15,7 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.view.View;
 
+import com.test.demovideo.record.MediaRecordActivity;
 import com.test.demovideo.utils.LogUtil;
 
 import java.io.File;
@@ -34,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
     private AlertDialog alertDialog;
     private final String[] requestPermissions = {
             Manifest.permission.RECORD_AUDIO,
+            Manifest.permission.CAMERA,
             Manifest.permission.WRITE_EXTERNAL_STORAGE,
             Manifest.permission.READ_EXTERNAL_STORAGE
     };
@@ -109,6 +111,10 @@ public class MainActivity extends AppCompatActivity {
         switch (view.getId()) {
             case R.id.main_act_btn_sys_app:
                 callSysRecord();
+                break;
+
+            case R.id.main_act_btn_media_record:
+                startActivity(new Intent(this, MediaRecordActivity.class));
                 break;
         }
     }

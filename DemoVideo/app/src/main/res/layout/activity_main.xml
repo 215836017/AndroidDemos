@@ -15,5 +15,12 @@
             android:onClick="btnClick"
             android:text="使用系统APP录像" />
 
+        <Button
+            android:id="@+id/main_act_btn_media_record"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="btnClick"
+            android:text="MediaRecord" />
+
     </LinearLayout>
 </ScrollView>
