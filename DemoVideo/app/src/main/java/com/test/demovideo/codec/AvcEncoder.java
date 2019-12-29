@@ -1,4 +1,4 @@
-package com.test.demovideo.player;
+package com.test.demovideo.codec;
 
 import android.annotation.SuppressLint;
 import android.media.MediaCodec;
@@ -6,13 +6,16 @@ import android.media.MediaCodecInfo;
 import android.media.MediaFormat;
 import android.os.Environment;
 
+import com.test.demovideo.utils.LogUtil;
+
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 
-public class MyAvcEncoder {
+
+public class AvcEncoder {
     private final static String TAG = "MeidaCodec";
 
     private int TIMEOUT_USEC = 12000;
@@ -20,24 +23,33 @@ public class MyAvcEncoder {
     private MediaCodec mediaCodec;
     int m_width;
     int m_height;
-    int m_framerate;
-    byte[] m_info = null;
-
+    private int m_framerate = 10;
     public byte[] configbyte;
 
+    private int DEFAULT_BPS = 400 * 1024;
+
+    private static String path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/testVideo.h264";
+    private BufferedOutputStream outputStream;
+    FileOutputStream outStream;
 
     @SuppressLint("NewApi")
-    public MyAvcEncoder(int width, int height, int framerate, int bitrate) {
+    public AvcEncoder(int width, int height) {
 
-        m_width  = width;
+        m_width = width;
         m_height = height;
-        m_framerate = framerate;
 
         MediaFormat mediaFormat = MediaFormat.createVideoFormat("video/avc", width, height);
+//            format.setInteger(MediaFormat.KEY_COLOR_FORMAT, MediaCodecInfo.CodecCapabilities.COLOR_FormatSurface);
+//        format.setInteger(MediaFormat.KEY_BIT_RATE, videoConfiguration.bps);
+//        format.setInteger(MediaFormat.KEY_FRAME_RATE, videoConfiguration.fps);
+//        format.setInteger(MediaFormat.KEY_I_FRAME_INTERVAL, videoConfiguration.ifi);
+//        format.setInteger(MediaFormat.KEY_BITRATE_MODE, MediaCodecInfo.EncoderCapabilities.BITRATE_MODE_CBR);
+
         mediaFormat.setInteger(MediaFormat.KEY_COLOR_FORMAT, MediaCodecInfo.CodecCapabilities.COLOR_FormatYUV420SemiPlanar);
-        mediaFormat.setInteger(MediaFormat.KEY_BIT_RATE, width*height*5);
-        mediaFormat.setInteger(MediaFormat.KEY_FRAME_RATE, 30);
-        mediaFormat.setInteger(MediaFormat.KEY_I_FRAME_INTERVAL, 1);
+        mediaFormat.setInteger(MediaFormat.KEY_BIT_RATE, width * height * 5);
+        mediaFormat.setInteger(MediaFormat.KEY_FRAME_RATE, 10);
+        mediaFormat.setInteger(MediaFormat.KEY_I_FRAME_INTERVAL, 20);
+        mediaFormat.setInteger(MediaFormat.KEY_BITRATE_MODE, MediaCodecInfo.EncoderCapabilities.BITRATE_MODE_CBR);
         try {
             mediaCodec = MediaCodec.createEncoderByType("video/avc");
         } catch (IOException e) {
@@ -49,17 +61,14 @@ public class MyAvcEncoder {
         createfile();
     }
 
-    private static String path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/test1.h264";
-    private BufferedOutputStream outputStream;
-    FileOutputStream outStream;
-    private void createfile(){
+    private void createfile() {
         File file = new File(path);
-        if(file.exists()){
+        if (file.exists()) {
             file.delete();
         }
         try {
             outputStream = new BufferedOutputStream(new FileOutputStream(file));
-        } catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -69,7 +78,7 @@ public class MyAvcEncoder {
         try {
             mediaCodec.stop();
             mediaCodec.release();
-        } catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -79,7 +88,7 @@ public class MyAvcEncoder {
 
     public boolean isRuning = false;
 
-    public void StopThread(){
+    public void StopThread() {
         isRuning = false;
         try {
             StopEncoder();
@@ -93,7 +102,7 @@ public class MyAvcEncoder {
 
     int count = 0;
 
-    public void StartEncoderThread(){
+    public void StartEncoderThread() {
         Thread EncoderThread = new Thread(new Runnable() {
 
             @SuppressLint("NewApi")
@@ -101,14 +110,14 @@ public class MyAvcEncoder {
             public void run() {
                 isRuning = true;
                 byte[] input = null;
-                long pts =  0;
+                long pts = 0;
                 long generateIndex = 0;
 
                 while (isRuning) {
-                    if (TestActivity.YUVQueue.size() >0){
+                    if (TestActivity.YUVQueue.size() > 0) {
                         input = TestActivity.YUVQueue.poll();
-                        byte[] yuv420sp = new byte[m_width*m_height*3/2];
-                        NV21ToNV12(input,yuv420sp,m_width,m_height);
+                        byte[] yuv420sp = new byte[m_width * m_height * 3 / 2];
+                        NV21ToNV12(input, yuv420sp, m_width, m_height);
                         input = yuv420sp;
                     }
                     if (input != null) {
@@ -133,16 +142,18 @@ public class MyAvcEncoder {
                                 ByteBuffer outputBuffer = outputBuffers[outputBufferIndex];
                                 byte[] outData = new byte[bufferInfo.size];
                                 outputBuffer.get(outData);
-                                if(bufferInfo.flags == 2){
+
+                                LogUtil.i(TAG, "StartEncoderThread() -- bufferInfo.flags = " + bufferInfo.flags);
+                                if (bufferInfo.flags == 2) {
                                     configbyte = new byte[bufferInfo.size];
                                     configbyte = outData;
-                                }else if(bufferInfo.flags == 1){
+                                } else if (bufferInfo.flags == 1) {
                                     byte[] keyframe = new byte[bufferInfo.size + configbyte.length];
                                     System.arraycopy(configbyte, 0, keyframe, 0, configbyte.length);
                                     System.arraycopy(outData, 0, keyframe, configbyte.length, outData.length);
 
                                     outputStream.write(keyframe, 0, keyframe.length);
-                                }else{
+                                } else {
                                     outputStream.write(outData, 0, outData.length);
                                 }
 
@@ -167,21 +178,21 @@ public class MyAvcEncoder {
 
     }
 
-    private void NV21ToNV12(byte[] nv21,byte[] nv12,int width,int height){
-        if(nv21 == null || nv12 == null)return;
-        int framesize = width*height;
-        int i = 0,j = 0;
+    private void NV21ToNV12(byte[] nv21, byte[] nv12, int width, int height) {
+        if (nv21 == null || nv12 == null) {
+            return;
+        }
+        int framesize = width * height;
+        int i = 0, j = 0;
         System.arraycopy(nv21, 0, nv12, 0, framesize);
-        for(i = 0; i < framesize; i++){
+        for (i = 0; i < framesize; i++) {
             nv12[i] = nv21[i];
         }
-        for (j = 0; j < framesize/2; j+=2)
-        {
-            nv12[framesize + j-1] = nv21[j+framesize];
+        for (j = 0; j < framesize / 2; j += 2) {
+            nv12[framesize + j - 1] = nv21[j + framesize];
         }
-        for (j = 0; j < framesize/2; j+=2)
-        {
-            nv12[framesize + j] = nv21[j+framesize-1];
+        for (j = 0; j < framesize / 2; j += 2) {
+            nv12[framesize + j] = nv21[j + framesize - 1];
         }
     }
 

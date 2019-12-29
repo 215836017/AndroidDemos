@@ -1,4 +1,4 @@
-package com.test.demovideo.player;
+package com.test.demovideo.codec;
 
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;

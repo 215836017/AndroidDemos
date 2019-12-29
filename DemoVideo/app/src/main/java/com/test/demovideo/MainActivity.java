@@ -15,6 +15,10 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.view.View;
 
+import com.test.demovideo.player.MSActivity;
+import com.test.demovideo.player.MSMActivity;
+import com.test.demovideo.player.MTActivity;
+import com.test.demovideo.player.VideoViewActivity;
 import com.test.demovideo.record.MediaRecordActivity;
 import com.test.demovideo.utils.LogUtil;
 
@@ -26,6 +30,10 @@ import static android.content.pm.PackageManager.PERMISSION_GRANTED;
  * 相关SDK：
  * 1. https://www.meishesdk.com/
  * 2. VCamera
+ * 相关连接：
+ * https://blog.csdn.net/liuzhi0724/article/details/81318816
+ * https://www.jianshu.com/p/f057a03ded0b
+ * https://www.jianshu.com/p/d3c0b2a2188a
  */
 public class MainActivity extends AppCompatActivity {
 
@@ -115,6 +123,22 @@ public class MainActivity extends AppCompatActivity {
 
             case R.id.main_act_btn_media_record:
                 startActivity(new Intent(this, MediaRecordActivity.class));
+                break;
+
+            case R.id.main_act_btn_mv:
+                startActivity(new Intent(this, VideoViewActivity.class));
+                break;
+
+            case R.id.main_act_btn_ms:
+                startActivity(new Intent(this, MSActivity.class));
+                break;
+
+            case R.id.main_act_btn_msm:
+                startActivity(new Intent(this, MSMActivity.class));
+                break;
+
+            case R.id.main_act_btn_mt:
+                startActivity(new Intent(this, MTActivity.class));
                 break;
         }
     }

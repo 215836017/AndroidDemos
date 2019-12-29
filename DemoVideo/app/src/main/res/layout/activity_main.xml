@@ -22,5 +22,33 @@
             android:onClick="btnClick"
             android:text="MediaRecord" />
 
+        <Button
+            android:id="@+id/main_act_btn_mv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="btnClick"
+            android:text="MediaController+VideoView" />
+
+        <Button
+            android:id="@+id/main_act_btn_ms"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="btnClick"
+            android:text="MediaPlayer+SurfaceView+自定义控制器" />
+
+        <Button
+            android:id="@+id/main_act_btn_msm"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="btnClick"
+            android:text="MediaPlayer+SurfaceView+MediaController" />
+
+        <Button
+            android:id="@+id/main_act_btn_mt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="btnClick"
+            android:text="MediaPlayer+TextureView+自定义控制器" />
+
     </LinearLayout>
 </ScrollView>
