@@ -11,7 +11,6 @@ import com.test.demovideo.R;
 
 /**
  * MediaController+VideoView
- *
  */
 public class VideoViewActivity extends AppCompatActivity {
 
