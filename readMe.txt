@@ -77,3 +77,6 @@
 
 1. modify DemoVideo.
 2019.12.21
+
+1. add DemoPreviewCamera.
+2020.01.18
