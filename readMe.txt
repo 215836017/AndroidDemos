@@ -81,5 +81,6 @@
 1. add DemoPreviewCamera.
 2020.01.18
 
-1. add DemoOpenGL.
+1. add DemoOpenGL and DemoAsynctask 
 2020.02.18
+
