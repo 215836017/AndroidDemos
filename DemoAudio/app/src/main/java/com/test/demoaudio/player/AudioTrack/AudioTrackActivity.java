@@ -65,7 +65,7 @@ public class AudioTrackActivity extends AppCompatActivity implements View.OnClic
 
         /*
         AudioTrack audio = new AudioTrack(
-     AudioManager.STREAM_MUSIC, // 指定流的类型
+     AudioRecordManager.STREAM_MUSIC, // 指定流的类型
      32000, // 设置音频数据的採样率 32k，假设是44.1k就是44100
      AudioFormat.CHANNEL_OUT_STEREO, // 设置输出声道为双声道立体声，而CHANNEL_OUT_MONO类型是单声道
      AudioFormat.ENCODING_PCM_16BIT, // 设置音频数据块是8位还是16位。这里设置为16位。

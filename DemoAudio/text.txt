@@ -24,7 +24,7 @@ int bufferSizeInBytes = AudioRecord.getMinBufferSize(sampleRateInHz,channelConfi
  Android AudioRecord录制wav格式的音频: https://blog.csdn.net/chezi008/article/details/53064604
 
 
- 二、MediaRecorder：
+二、MediaRecorder：
      MediaRecorder 类可用于音频和视频的捕获。录制的音频文件是经过压缩后的，需要设置编码器。并且录制的音频文件可以用系统自带
  的Music播放器播放。MediaRecorder已经集成了录音、编码、压缩等，并支持少量的录音音频格式，但是这也是他的缺点，支持的格式过少
  并且无法实时处理音频数据。
@@ -42,3 +42,13 @@ int bufferSizeInBytes = AudioRecord.getMinBufferSize(sampleRateInHz,channelConfi
 
    参考链接：
    https://www.cnblogs.com/plokmju/p/android_MediaRecorder.html
+
+三、MediaCodec
+1. Android MediaCodec主要有3种数据处理的方式：
+   (1). 使用Buffers的异步处理方式（Asynchronous Processing using Buffers）
+   (2). 使用Buffers的同步处理方式（Synchronous Processing using Buffers）
+   (3). 使用Buffer数组的同步处理方式（Synchronous Processing using Buffer Arrays (deprecated)）
+
+参考链接：
+https://www.cnblogs.com/roger-yu/p/7244614.html
+https://www.cnblogs.com/roger-yu/p/5635494.html

@@ -1,6 +1,7 @@
 package com.test.demoaudio;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -8,8 +9,13 @@ import androidx.core.app.ActivityCompat;
 import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -21,7 +27,14 @@ import com.test.demoaudio.player.mediaplayer.MediaPlayerActivity;
 import com.test.demoaudio.player.soundpool.SoundPoolActivity;
 import com.test.demoaudio.record.AudioRecordActivity;
 import com.test.demoaudio.record.MediaRecorderActivity;
+import com.test.demoaudio.record.SystemRecordActivity;
 import com.test.demoaudio.utils.LogUtil;
+
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 
 import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 
@@ -51,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        applyAllNeedPermissions();
+//        applyAllNeedPermissions();
     }
 
     private void applyAllNeedPermissions() {
@@ -116,6 +129,10 @@ public class MainActivity extends AppCompatActivity {
     public void btnClick(View view) {
 
         switch (view.getId()) {
+            case R.id.main_act_btn_sys_record:
+                intent.setClass(this, SystemRecordActivity.class);
+                break;
+
             case R.id.main_act_btn_audio_record:
                 intent.setClass(this, AudioRecordActivity.class);
                 break;

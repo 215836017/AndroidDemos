@@ -11,6 +11,14 @@
         android:orientation="vertical">
 
         <Button
+            android:id="@+id/main_act_btn_sys_record"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:onClick="btnClick"
+            android:text="Use System Recorder" />
+
+        <Button
             android:id="@+id/main_act_btn_audio_record"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
