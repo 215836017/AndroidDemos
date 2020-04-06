@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".SeekBarActivity">
+
+    <TextView
+        android:id="@+id/textShowProgress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="当前值：0"
+        android:textColor="#f00"
+        android:textSize="30sp" />
+
+    <SeekBar
+        android:id="@+id/seekBar"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:layout_margin="10dp"
+        android:max="300" />
+
+    <Button
+        android:id="@+id/seekbar_start"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:onClick="seekbarBtnClick"
+        android:text="start"
+        android:textSize="30sp" />
+
+    <Button
+        android:id="@+id/seekbar_stop"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="seekbarBtnClick"
+        android:text="stop"
+        android:textSize="30sp" />
+</LinearLayout>
