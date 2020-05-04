@@ -84,3 +84,5 @@
 1. add DemoOpenGL and DemoAsynctask 
 2020.02.18
 
+1. add DemoBezierPath
+2020.05.01

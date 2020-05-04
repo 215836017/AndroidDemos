@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".MainActivity">
+
+    <Button
+        android:id="@+id/main_btn_sinWave"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:onClick="mainBtnClick"
+        android:text="Sin wave view" />
+
+    <Button
+        android:id="@+id/main_btn_test_1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:onClick="mainBtnClick"
+        android:text="test 01" />
+
+    <Button
+        android:id="@+id/main_btn_second_bezier"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:onClick="mainBtnClick"
+        android:text="Second Bezier" />
+
+    <Button
+        android:id="@+id/main_btn_second_bezier_test"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:onClick="mainBtnClick"
+        android:text="Second Bezier test" />
+
+</LinearLayout>

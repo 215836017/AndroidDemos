@@ -1,0 +1,141 @@
+package com.cakes.demobezierpath;
+
+
+import android.content.Context;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.Path;
+import android.os.Handler;
+import android.util.AttributeSet;
+import android.view.MotionEvent;
+import android.view.View;
+
+public class SecondBezierTestView extends View {
+
+    //起点
+    private float p1_X;
+    private float p1_Y;
+
+    private float p2_X;
+    private float p2_Y;
+
+    private float p3_X;
+    private float p3_Y;
+
+    private float p4_X;
+    private float p4_Y;
+
+    private float p5_X;
+    private float p5_Y;
+
+    private float p6_X;
+    private float p6_Y;
+
+    private float p7_X;
+    private float p7_Y;
+
+    private float p8_X;
+    private float p8_Y;
+
+    private float p9_X;
+    private float p9_Y;
+
+    private Path mPath;
+    private Path mPath2;
+    private Paint mPaintBezier;
+    private Paint mPaintFlag;
+    private Paint mPaintFlagText;
+
+    public SecondBezierTestView(Context context) {
+        super(context);
+    }
+
+    public SecondBezierTestView(Context context, AttributeSet attrs) {
+        super(context, attrs);
+        mPaintBezier = new Paint(Paint.ANTI_ALIAS_FLAG);
+        mPaintBezier.setStrokeWidth(8);
+        mPaintBezier.setStyle(Paint.Style.STROKE);
+
+    }
+
+    public SecondBezierTestView(Context context, AttributeSet attrs, int defStyleAttr) {
+        super(context, attrs, defStyleAttr);
+    }
+
+    int centerH = 0;
+    int speed_x = 50;
+    int intervarl_x = 150;
+    int intervarl_y = 80;
+
+    @Override
+    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
+        super.onSizeChanged(w, h, oldw, oldh);
+        //初始时确定起点、终点和控制点的坐标
+        centerH = h / 2;
+
+        p1_X = intervarl_x;
+        p1_Y = centerH;
+
+        p2_X = intervarl_x * 2;
+        p2_Y = centerH - intervarl_y;
+
+        p3_X = intervarl_x * 3;
+        p3_Y = centerH;
+
+        p4_X = intervarl_x * 4;
+        p4_Y = centerH + intervarl_y;
+
+        p5_X = intervarl_x * 5;
+        p5_Y = centerH;
+
+        p6_X = intervarl_x * 6;
+        p6_Y = centerH - intervarl_y;
+
+        p7_X = intervarl_x * 7;
+        p7_Y = centerH;
+
+        p8_X = intervarl_x * 8;
+        p8_Y = centerH + intervarl_y;
+
+        p9_X = intervarl_x * 9;
+        p9_Y = centerH;
+
+        mPath = new Path();
+        mPath2 = new Path();
+
+    }
+
+    @Override
+    protected void onDraw(Canvas canvas) {
+        super.onDraw(canvas);
+        mPath.reset();
+        mPaintBezier.setColor(Color.BLUE);
+        mPath.moveTo(p1_X, p1_Y);
+        mPath.quadTo(p2_X, p2_Y, p3_X, p3_Y);
+        mPath.quadTo(p4_X, p4_Y, p5_X, p5_Y);
+        mPath.quadTo(p6_X, p6_Y, p7_X, p7_Y);
+        mPath.quadTo(p8_X, p8_Y, p9_X, p9_Y);
+        canvas.drawPath(mPath, mPaintBezier);
+
+        p1_X += speed_x;
+        p2_X += speed_x;
+        p3_X += speed_x;
+        p4_X += speed_x;
+        p5_X += speed_x;
+        p6_X += speed_x;
+        p7_X += speed_x;
+        p8_X += speed_x;
+        p9_X += speed_x;
+        mPath2.reset();
+        mPaintBezier.setColor(Color.RED);
+        mPath2.moveTo(p1_X, p1_Y);
+        mPath2.quadTo(p2_X, p2_Y, p3_X, p3_Y);
+        mPath2.quadTo(p4_X, p4_Y, p5_X, p5_Y);
+        mPath2.quadTo(p6_X, p6_Y, p7_X, p7_Y);
+        mPath2.quadTo(p8_X, p8_Y, p9_X, p9_Y);
+        canvas.drawPath(mPath2, mPaintBezier);
+    }
+
+    private Handler handler = new Handler();
+}
