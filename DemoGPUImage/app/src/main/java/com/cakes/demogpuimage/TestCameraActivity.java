@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
+import com.cakes.demogpuimage.R;
+
 import jp.co.cyberagent.android.gpuimage.GPUImageView;
 
 public class TestCameraActivity extends AppCompatActivity {
@@ -58,8 +60,6 @@ public class TestCameraActivity extends AppCompatActivity {
 
             }
         });
-
-
     }
 
 
