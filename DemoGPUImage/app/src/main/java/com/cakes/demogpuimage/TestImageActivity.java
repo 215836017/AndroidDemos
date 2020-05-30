@@ -5,22 +5,23 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
+import android.widget.Toast;
 
 import jp.co.cyberagent.android.gpuimage.GPUImage;
-import jp.co.cyberagent.android.gpuimage.filter.GPUImageSaturationFilter;
 
 public class TestImageActivity extends AppCompatActivity {
 
     private final String TAG = "TestImageActivity";
 
-    private LinearLayout layoutRoot;
+    private FrameLayout layoutRoot;
     private ImageView imageView;
     private SeekBar seekBar;
 
-    private Bitmap bitmap;
     private GPUImage gpuImage;
     private FragFilterList fragFilterList;
 
@@ -52,23 +53,20 @@ public class TestImageActivity extends AppCompatActivity {
 
     private void initGpuImage() {
         gpuImage = new GPUImage(this);
-        bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.image_b);
+        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.image_b);
         gpuImage.setImage(bitmap);
-    }
-
-    //方法的定义，定义一个有参数，有返回值的方法，参数接收SeekBar传过来的progress，返回值为bitmap
-    public Bitmap getGPUImageWithBar(int progress) {
-
-        //设置饱和度的滤镜
-        gpuImage.setFilter(new GPUImageSaturationFilter(progress));
-        bitmap = gpuImage.getBitmapWithFilterApplied();
-        return bitmap;
     }
 
     private SeekBar.OnSeekBarChangeListener onSeekBarChangeListener = new SeekBar.OnSeekBarChangeListener() {
         @Override
         public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-            imageView.setImageBitmap(getGPUImageWithBar(progress));
+            Bitmap bitmapResult = GPUImageUtil.getFilterByType(itemPosition, itemValue, gpuImage, progress);
+            if (null != bitmapResult) {
+                imageView.setImageBitmap(bitmapResult);
+            } else {
+                Toast.makeText(TestImageActivity.this, "未实现效果", Toast.LENGTH_LONG).show();
+            }
+
         }
 
         @Override
@@ -89,7 +87,7 @@ public class TestImageActivity extends AppCompatActivity {
         public void onItemClicked(int pos, String value) {
             itemPosition = pos;
             itemValue = value;
-
+            layoutRoot.setVisibility(View.GONE);
         }
     };
 }

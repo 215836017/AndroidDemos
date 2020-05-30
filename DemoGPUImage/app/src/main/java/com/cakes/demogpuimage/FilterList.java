@@ -7,7 +7,7 @@ public class FilterList {
 
     public static List<String> getList() {
         List<String> filterList = new ArrayList<>();
-        filterList.add("Saturation-饱和度");
+        filterList.add("Saturation");
         filterList.add("Contrast");
         filterList.add("Brightness");
         filterList.add("Levels");

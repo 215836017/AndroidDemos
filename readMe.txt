@@ -89,3 +89,6 @@
 
 1. add DemoGPUImage
 2020.05.02
+
+1. modify DemoGPUImage
+2020.05.26
