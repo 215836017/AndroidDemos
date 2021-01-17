@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">DemoActivityLifecycle</string>
+    <string name="leave_safe_region">离开安全区域啦</string>
+</resources>
